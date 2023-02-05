@@ -105,7 +105,7 @@ public class Create implements Callable<Integer> {
         if (created) {
             System.out.printf("Created application %s%n", appPath);
             System.out.println("Next steps:");
-            System.out.printf("cd %s", appPath);
+            System.out.printf("cd %s%n", appPath);
             System.out.println("mvn compile exec:java");
         }
         return created ? 0 : 1;

@@ -20,6 +20,7 @@ graalvm must use native image tool
 gu install native-image
 ```
 
+Package and create native executables
 ```
 mvn package -Pnative
 ```

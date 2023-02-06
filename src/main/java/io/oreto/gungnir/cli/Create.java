@@ -32,12 +32,24 @@ import static org.joox.JOOX.*;
 public class Create implements Callable<Integer> {
     final static String GUNGNIR_LAUNCH_APP_NAME = "gungnir-launch";
 
+    final static String ASCII_LINE = "---------------------------------";
+
     final String[] SRC_MAIN_JAVA = new String[] { "src", "main", "java" };
     final String[] SRC_MAIN_TMP = new String[] { "src", "main", "tmp" };
     final String[] SRC_TEST_JAVA = new String[] { "src", "test", "java" };
 
     enum Json implements InputOption {
-        gson, jackson
+        gson("https://github.com/google/gson"), jackson("https://github.com/FasterXML/jackson");
+
+        Json(String description) {
+           this.description = description;
+        }
+
+        private final String description;
+
+        public String description() {
+            return description;
+        }
     }
 
     @CommandLine.Parameters(index = "0", defaultValue = "")
@@ -86,7 +98,7 @@ public class Create implements Callable<Integer> {
         if (json == null)
             json = OptionPrompt.create("Choose json provider", Json.values())
                 .defaultTo(Json.gson)
-                .numberOptions(false)
+                .numberOptions(true)
                 .getInput();
 
         if (database == null)
@@ -103,7 +115,8 @@ public class Create implements Callable<Integer> {
         }
         boolean created = create();
         if (created) {
-            System.out.printf("Created application %s%n", appPath);
+            System.out.printf("%s%nCreated application %s%n", ASCII_LINE, appPath);
+            System.out.println(ASCII_LINE);
             System.out.println("Next steps:");
             System.out.printf("cd %s%n", appPath);
             System.out.println("mvn compile exec:java");
@@ -117,9 +130,9 @@ public class Create implements Callable<Integer> {
             , boolean database
             , boolean di
             , boolean jte) {
-        System.out.println("\n---------------------------------");
+        System.out.printf("%s%n", ASCII_LINE);
         System.out.println("Confirm Selections");
-        System.out.println("---------------------------------");
+        System.out.println(ASCII_LINE);
         System.out.printf("application name: %s%n", appName);
         System.out.printf("package name: %s%n", packageName);
         System.out.printf("json provider: %s%n", json);

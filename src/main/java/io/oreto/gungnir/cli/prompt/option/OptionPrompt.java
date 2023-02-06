@@ -83,8 +83,11 @@ public class OptionPrompt<T extends Enum<T> & InputOption> {
                 sb.append(' ')
                         .append(option.ordinal() + 1).append(':')
                         .append(' ')
-                        .append(option.name())
-                        .append('\n');
+                        .append(option.name());
+                if (Objects.nonNull(option.description())) {
+                    sb.append(" [ ").append(option.description()).append(" ]");
+                }
+                sb.append('\n');
             }
             sb.append("enter selection");
             if (Objects.nonNull(defaultOption))
@@ -92,8 +95,10 @@ public class OptionPrompt<T extends Enum<T> & InputOption> {
             sb.append(' ');
         } else {
             Collection<String> displayOptions = options.stream()
-                    .map(option -> option == defaultOption ? "*" + defaultOption.name() : option.name())
-                    .sorted()
+                    .map(option -> option == defaultOption
+                            ? defaultOption.length() == 1 ? defaultOption.name().toUpperCase()
+                                : String.format("%c%s", '➤', defaultOption.name())
+                            : option.name())
                     .collect(Collectors.toList());
             sb.append(' ')
                     .append('[')

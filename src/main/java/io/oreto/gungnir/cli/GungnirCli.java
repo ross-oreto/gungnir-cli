@@ -4,7 +4,7 @@ import picocli.CommandLine;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
-@CommandLine.Command(subcommands = Create.class)
+@CommandLine.Command(name = "gungnir", subcommands = Create.class)
 public class GungnirCli implements Callable<Integer> {
     public static void main(String[] args) throws IOException {
         int exitCode = new CommandLine(new GungnirCli()).execute(args);
@@ -26,6 +26,7 @@ public class GungnirCli implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         spec.commandLine().usage(System.out);
+        spec.subcommands().forEach((k, v) -> v.usage(System.out));
         return 0;
     }
 }

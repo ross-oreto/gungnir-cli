@@ -5,6 +5,10 @@ import java.util.Set;
 public interface InputOption extends CharSequence {
     String name();
 
+    default String description() {
+        return null;
+    }
+
     default boolean ignoreCase() {
         return true;
     }
